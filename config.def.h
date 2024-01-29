@@ -5,6 +5,8 @@ static int topbar = 1;                      /* -b  option; if 0, dmenu appears a
 static const int vertpad = 10;              /* vertical padding of bar */
 static const int sidepad = 10;              /* horizontal padding of bar */
 
+static unsigned int border_width = 0;
+
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
 	"monospace:size=10"
@@ -15,6 +17,7 @@ static const char *colors[SchemeLast][2] = {
 	[SchemeNorm] = { "#bbbbbb", "#222222" },
 	[SchemeSel] = { "#eeeeee", "#005577" },
 	[SchemeOut] = { "#000000", "#00ffff" },
+        [SchemeBorder] = { "#000000", "#005577" },
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines      = 0;
