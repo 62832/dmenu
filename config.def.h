@@ -29,3 +29,6 @@ static unsigned int lines      = 0;
  * for example: " /?\"&[]"
  */
 static const char worddelimiters[] = " ";
+
+/* Character to use when censoring text input in password mode */
+static const char censor_char = '*';
