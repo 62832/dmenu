@@ -9,7 +9,7 @@ static unsigned int border_width = 2;
 
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *fonts[] = {
-	"Terminus:size=12"
+    "Terminus:size=12"
 };
 
 /* -p  option; prompt to the left of input field */
