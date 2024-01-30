@@ -231,7 +231,6 @@ drawmenu(void)
 		x += inputw;
 		w = TEXTW("<");
 		if (curr->left) {
-			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_text(drw, x, 0, w, bh, lrpad / 2, "<", 0);
 		}
 		x += w;
@@ -239,8 +238,8 @@ drawmenu(void)
 			x = drawitem(item, x, 0, textw_clamp(item->text, mw - x - TEXTW(">")));
 		if (next) {
 			w = TEXTW(">");
-			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_text(drw, mw - w, 0, w, bh, lrpad / 2, ">", 0);
+			drw_setscheme(drw, scheme[SchemeSel]);
+			drw_text(drw, mw - w - 2 * sp, 0, w, bh, lrpad / 2, ">", 0);
 		}
 	}
 	drw_map(drw, win, 0, 0, mw, mh);
@@ -740,7 +739,7 @@ setup(void)
 	swa.override_redirect = True;
 	swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
 	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
-	win = XCreateWindow(dpy, root, x + sp, y + vp, mw - 2 * sp, mh, border_width,
+	win = XCreateWindow(dpy, root, x + sp, y + vp - (topbar ? 0 : border_width * 2), mw - 2 * sp - border_width * 2, mh, border_width,
 	                    CopyFromParent, CopyFromParent, CopyFromParent,
 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
         if (border_width)
