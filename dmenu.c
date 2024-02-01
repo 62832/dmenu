@@ -29,10 +29,10 @@
 /* enums */
 enum { /* color schemes */
         SchemeNorm,
-        SchemeSel,
+        SchemeUnsel,
         SchemeOut,
         SchemeNormHighlight,
-        SchemeSelHighlight,
+        SchemeUnselHighlight,
         SchemeBorder,
         SchemeLast
 };
@@ -148,7 +148,7 @@ drawhighlights(struct item *item, int x, int y, int maxw)
         char restorechar, tokens[sizeof text], *highlight, *token;
         int indentx, highlightlen;
 
-        drw_setscheme(drw, scheme[item == sel ? SchemeSelHighlight : SchemeNormHighlight]);
+        drw_setscheme(drw, scheme[item == sel ? SchemeNormHighlight : SchemeUnselHighlight]);
         strcpy(tokens, text);
         for (token = strtok(tokens, " "); token; token = strtok(NULL, " ")) {
                 highlight = fstrstr(item->text, token);
@@ -183,11 +183,11 @@ static int
 drawitem(struct item *item, int x, int y, int w)
 {
 	if (item == sel)
-		drw_setscheme(drw, scheme[SchemeSel]);
+		drw_setscheme(drw, scheme[SchemeNorm]);
 	else if (item->out)
 		drw_setscheme(drw, scheme[SchemeOut]);
 	else
-		drw_setscheme(drw, scheme[SchemeNorm]);
+		drw_setscheme(drw, scheme[SchemeUnsel]);
 
 	int r = drw_text(drw, x, y, w, bh, lrpad / 2, item->text, 0);
         drawhighlights(item, x, y, w);
@@ -218,13 +218,11 @@ drawmenu(void)
         int curlen, rcurlen;
         char *censort;
 
-	drw_setscheme(drw, scheme[SchemeNorm]);
+        drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
 
-	if (prompt && *prompt) {
-		drw_setscheme(drw, scheme[SchemeSel]);
+	if (prompt && *prompt)
 		x = drw_text(drw, x, 0, promptw, bh, lrpad / 2, prompt, 0);
-	}
 	/* draw input field */
 	w = (lines > 0 || !matches) ? mw - x - 5 * sp  : inputw;
 	
@@ -239,7 +237,6 @@ drawmenu(void)
         curpos = MIN(curpos, curlen);
         oldcurlen = curlen;
 
-        drw_setscheme(drw, scheme[SchemeSel]);
         if (passwd) {
                 censort = ecalloc(1, sizeof(text));
                 memset(censort, censor_char, strlen(text));
@@ -270,7 +267,7 @@ drawmenu(void)
 			x = drawitem(item, x, 0, textw_clamp(item->text, mw - x - TEXTW(">") - TEXTW(numbers)));
 		if (next) {
 			w = TEXTW(">");
-			drw_setscheme(drw, scheme[SchemeSel]);
+			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_text(drw, mw - w - TEXTW(numbers) - 2 * sp, 0, w, bh, lrpad / 2, ">", 0);
 		}
 	}
@@ -770,7 +767,7 @@ setup(void)
 
 	/* create menu window */
 	swa.override_redirect = True;
-	swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
+	swa.background_pixel = scheme[SchemeUnsel][ColBg].pixel;
 	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
 	win = XCreateWindow(dpy, root, x + sp, y + vp - (topbar ? 0 : border_width * 2), mw - 2 * sp - border_width * 2, mh, border_width,
 	                    CopyFromParent, CopyFromParent, CopyFromParent,
@@ -844,10 +841,10 @@ main(int argc, char *argv[])
 			colors[SchemeNorm][ColBg] = argv[++i];
 		else if (!strcmp(argv[i], "-nf"))  /* normal foreground color */
 			colors[SchemeNorm][ColFg] = argv[++i];
-		else if (!strcmp(argv[i], "-sb"))  /* selected background color */
-			colors[SchemeSel][ColBg] = argv[++i];
-		else if (!strcmp(argv[i], "-sf"))  /* selected foreground color */
-			colors[SchemeSel][ColFg] = argv[++i];
+		else if (!strcmp(argv[i], "-ub"))  /* unselected background color */
+			colors[SchemeUnsel][ColBg] = argv[++i];
+		else if (!strcmp(argv[i], "-uf"))  /* unselected foreground color */
+			colors[SchemeUnsel][ColFg] = argv[++i];
 		else if (!strcmp(argv[i], "-w"))   /* embedding window id */
 			embed = argv[++i];
                 else if (!strcmp(argv[i], "-bw"))  /* border width */

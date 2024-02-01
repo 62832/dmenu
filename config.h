@@ -1,6 +1,3 @@
-/* See LICENSE file for copyright and license details. */
-/* Default settings; can be overriden by command line. */
-
 static int topbar = 1;                      /* -b  option; if 0, dmenu appears at bottom     */
 static const int vertpad = 5;              /* vertical padding of bar */
 static const int sidepad = 5;              /* horizontal padding of bar */
@@ -17,12 +14,12 @@ static const char *prompt = "RUN";
 
 static const char *colors[SchemeLast][2] = {
                             /*    fg        bg    */
-    [SchemeNorm]          = { "#444444", "#000000" },
-    [SchemeSel]           = { "#ffffff", "#000000" },
-    [SchemeOut]           = { "#cc0000", "#000000" },
-    [SchemeNormHighlight] = { "#333300", "#000000" },
-    [SchemeSelHighlight]  = { "#cccc00", "#000000" },
-    [SchemeBorder]        = { "#000000", "#ffffff" },
+    [SchemeNorm]           = { "#ffffff", "#000000" },
+    [SchemeUnsel]          = { "#444444", "#000000" },
+    [SchemeOut]            = { "#cc0000", "#000000" },
+    [SchemeNormHighlight]  = { "#cccc00", "#000000" },
+    [SchemeUnselHighlight] = { "#333300", "#000000" },
+    [SchemeBorder]         = { "#000000", "#ffffff" },
 };
 /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
 static unsigned int lines = 0;
