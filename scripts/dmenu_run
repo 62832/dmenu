@@ -1,0 +1,7 @@
+#!/bin/sh
+cmd=$(dmenu_path | dmenu "$@")
+
+case $cmd in
+	*\!) "${TERMINAL:-st}" -e "${cmd%?}" & ;;
+	*) "$cmd" & ;;
+esac

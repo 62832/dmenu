@@ -1,0 +1,46 @@
+#!/bin/sh
+WM='dwm'
+
+# assume (e)logind present, may not necessarily be the case
+case "$(readlink -f /sbin/init)" in
+    *systemd*) ctl='systemctl' ;;
+    *) ctl='loginctl' ;;
+esac
+
+wmpid() {
+    tree="$(pstree -ps $$)"
+    tree="${tree#*"$WM"(}"
+    echo "${tree%%)*}"
+}
+
+actions() {
+    printf "lock\nlogout\n"
+    printf "renew %s\n" "$WM"
+
+    # not guaranteed that other inits will provide a suspend/hibernate program outside of elogind
+    command -v $ctl > /dev/null && printf "suspend\nhibernate\n"
+    
+    printf "reboot\nshutdown\ndisplay off"
+}
+
+_reboot() {
+    command -v $ctl > /dev/null && $ctl reboot -i
+    reboot || sudo -A reboot
+}
+
+_shutdown() {
+    command -v $ctl > /dev/null && $ctl poweroff -i
+    poweroff || sudo -A poweroff
+}
+
+case "$(actions | dmenu -i -p 'Action: ')" in
+    'lock') slock ;;
+    'logout') kill -TERM "$(wmpid)" ;;
+    "renew $WM") kill -HUP "$(wmpid)" ;;
+    'suspend') slock $ctl suspend -i ;;
+    'hibernate') slock $ctl hibernate -i ;;
+    'reboot') _reboot ;;
+    'shutdown') _shutdown ;;
+    'display off') xset dpms force off ;;
+    *) exit 1 ;;
+esac

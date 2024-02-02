@@ -1,0 +1,18 @@
+#!/bin/sh
+echo 'OK Pleased to meet you'
+
+while read -r stdin; do
+    case $stdin in
+        *BYE*) break ;;
+        *SETDESC*)
+            KEYNAME=${stdin#*:%0A%22}; KEYNAME=${KEYNAME%\%22\%0A*}
+            KEYID=${stdin#*ID }; KEYID=${KEYID%,*}
+            [ "$KEYNAME" != "$stdin" ] && PROMPT="gpg-agent: $KEYNAME ($KEYID)"
+            echo OK ;;
+        *SETPROMPT*)
+            PROMPT="${PROMPT:-"${stdin#*SETPROMPT }"}"
+            echo OK ;;
+        *GETPIN*) printf 'D %s\nOK\n' "$(dmenu -P -p "$PROMPT")" ;;
+        *) echo OK
+    esac
+done

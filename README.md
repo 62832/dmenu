@@ -33,6 +33,21 @@ Yet another personal build of Suckless's [dmenu](https://tools.suckless.org/dmen
     - adds text which displays the number of matched and total items in the top right corner of
       dmenu
 
+### Scripts included:
+
+  - `dmenu_run`(\_i)
+    - starts commands in a defined `$TERMINAL` when appended with `!`
+    - replaces `dmenu_run`
+    - taken from [suckless](https://tools.suckless.org/dmenu/scripts/)
+  - `dmenu_sudo`
+    - `SUDO_ASKPASS` wrapper for dmenu in password mode
+  - `dmenu_sys`
+    - shows a list of system/power options (lock, logout, shutdown etc.)
+    - adapted from [LukeSmithxyz/voidrice](https://github.com/LukeSmithxyz/voidrice)
+  - `dmenu_pinentry`
+    - integrates dmenu with [GnuPG](https://gnupg.org/) as an alternative pinentry method
+    - adapted from [inco-cc/pinentry-dmenu](https://github.com/inco-cc/pinentry-dmenu)
+
 ### Other modifications:
 
   - replaced `CTRL+y`/`CTRL+Y` paste binds with `CTRL+v`/`CTRL+V` respectively
