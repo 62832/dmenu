@@ -21,20 +21,20 @@
 
 /* macros */
 #define INTERSECT(x,y,w,h,r)  (MAX(0, MIN((x)+(w),(r).x_org+(r).width)  - MAX((x),(r).x_org)) \
-                             * MAX(0, MIN((y)+(h),(r).y_org+(r).height) - MAX((y),(r).y_org)))
+			     * MAX(0, MIN((y)+(h),(r).y_org+(r).height) - MAX((y),(r).y_org)))
 #define TEXTW(X)              (drw_fontset_getwidth(drw, (X)) + lrpad)
 #define NUMBERSMAXDIGITS      100
 #define NUMBERSBUFSIZE        (NUMBERSMAXDIGITS * 2) + 1
 
 /* enums */
 enum { /* color schemes */
-        SchemeNorm,
-        SchemeUnsel,
-        SchemeOut,
-        SchemeNormHighlight,
-        SchemeUnselHighlight,
-        SchemeBorder,
-        SchemeLast
+	SchemeNorm,
+	SchemeUnsel,
+	SchemeOut,
+	SchemeNormHighlight,
+	SchemeUnselHighlight,
+	SchemeBorder,
+	SchemeLast
 };
 
 struct item {
@@ -134,7 +134,7 @@ cistrstr(const char *h, const char *n)
 
 	for (; *h; ++h) {
 		for (i = 0; n[i] && tolower((unsigned char)n[i]) ==
-		            tolower((unsigned char)h[i]); ++i)
+			    tolower((unsigned char)h[i]); ++i)
 			;
 		if (n[i] == '\0')
 			return (char *)h;
@@ -145,38 +145,38 @@ cistrstr(const char *h, const char *n)
 static void
 drawhighlights(struct item *item, int x, int y, int maxw)
 {
-        char restorechar, tokens[sizeof text], *highlight, *token;
-        int indentx, highlightlen;
+	char restorechar, tokens[sizeof text], *highlight, *token;
+	int indentx, highlightlen;
 
-        drw_setscheme(drw, scheme[item == sel ? SchemeNormHighlight : SchemeUnselHighlight]);
-        strcpy(tokens, text);
-        for (token = strtok(tokens, " "); token; token = strtok(NULL, " ")) {
-                highlight = fstrstr(item->text, token);
-                while (highlight) {
-                        // Move item str end, calc width for highlight indent, and restore
-                        highlightlen = highlight - item->text;
-                        restorechar = *highlight;
-                        item->text[highlightlen] = '\0';
-                        indentx = TEXTW(item->text);
-                        item->text[highlightlen] = restorechar;
+	drw_setscheme(drw, scheme[item == sel ? SchemeNormHighlight : SchemeUnselHighlight]);
+	strcpy(tokens, text);
+	for (token = strtok(tokens, " "); token; token = strtok(NULL, " ")) {
+		highlight = fstrstr(item->text, token);
+		while (highlight) {
+			// Move item str end, calc width for highlight indent, and restore
+			highlightlen = highlight - item->text;
+			restorechar = *highlight;
+			item->text[highlightlen] = '\0';
+			indentx = TEXTW(item->text);
+			item->text[highlightlen] = restorechar;
 
-                        // Move highlight str end, draw highlight, and restore
-                        restorechar = highlight[strlen(token)];
-                        highlight[strlen(token)] = '\0';
-                        if (indentx - (lrpad / 2) - 1 < maxw)
-                                drw_text(
-                                        drw,
-                                        x + indentx - (lrpad / 2) - 1,
-                                        y,
-                                        MIN(maxw - indentx, TEXTW(highlight) - lrpad),
-                                        bh, 0, highlight, 0
-                                );
-                        highlight[strlen(token)] = restorechar;
+			// Move highlight str end, draw highlight, and restore
+			restorechar = highlight[strlen(token)];
+			highlight[strlen(token)] = '\0';
+			if (indentx - (lrpad / 2) - 1 < maxw)
+				drw_text(
+					drw,
+					x + indentx - (lrpad / 2) - 1,
+					y,
+					MIN(maxw - indentx, TEXTW(highlight) - lrpad),
+					bh, 0, highlight, 0
+				);
+			highlight[strlen(token)] = restorechar;
 
-                        if (strlen(highlight) - strlen(token) < strlen(token)) break;
-                        highlight = fstrstr(highlight + strlen(token), token);
-                }
-        }
+			if (strlen(highlight) - strlen(token) < strlen(token)) break;
+			highlight = fstrstr(highlight + strlen(token), token);
+		}
+	}
 }
 
 static int
@@ -190,23 +190,23 @@ drawitem(struct item *item, int x, int y, int w)
 		drw_setscheme(drw, scheme[SchemeUnsel]);
 
 	int r = drw_text(drw, x, y, w, bh, lrpad / 2, item->text, 0);
-        drawhighlights(item, x, y, w);
-        return r;
+	drawhighlights(item, x, y, w);
+	return r;
 }
 
 static void
 recalculatenumbers(void)
 {
-        unsigned int numer = 0, denom = 0;
-        struct item *item;
-        if (matchend) {
-                numer++;
-                for (item = matchend; item && item->left; item = item->left)
-                        numer++;
-        }
-        for (item = items; item && item->text; item++)
-                denom++;
-        snprintf(numbers, NUMBERSBUFSIZE, "%d/%d", numer, denom);
+	unsigned int numer = 0, denom = 0;
+	struct item *item;
+	if (matchend) {
+		numer++;
+		for (item = matchend; item && item->left; item = item->left)
+			numer++;
+	}
+	for (item = items; item && item->text; item++)
+		denom++;
+	snprintf(numbers, NUMBERSBUFSIZE, "%d/%d", numer, denom);
 }
 
 static void
@@ -214,11 +214,11 @@ drawmenu(void)
 {
 	struct item *item;
 	int x = 0, y = 0, w;
-        static int curpos, oldcurlen;
-        int curlen, rcurlen;
-        char *censort;
+	static int curpos, oldcurlen;
+	int curlen, rcurlen;
+	char *censort;
 
-        drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
 
 	if (prompt && *prompt)
@@ -226,30 +226,30 @@ drawmenu(void)
 	/* draw input field */
 	w = (lines > 0 || !matches) ? mw - x - 5 * sp  : inputw;
 	
-        w -= lrpad / 2;
-        x += lrpad / 2;
+	w -= lrpad / 2;
+	x += lrpad / 2;
 
-        rcurlen = drw_fontset_getwidth(drw, text + cursor);
-        curlen = drw_fontset_getwidth(drw, text) - rcurlen;
-        curpos += curlen - oldcurlen;
-        curpos = MIN(w, MAX(0, curpos));
-        curpos = MAX(curpos, w - rcurlen);
-        curpos = MIN(curpos, curlen);
-        oldcurlen = curlen;
+	rcurlen = drw_fontset_getwidth(drw, text + cursor);
+	curlen = drw_fontset_getwidth(drw, text) - rcurlen;
+	curpos += curlen - oldcurlen;
+	curpos = MIN(w, MAX(0, curpos));
+	curpos = MAX(curpos, w - rcurlen);
+	curpos = MIN(curpos, curlen);
+	oldcurlen = curlen;
 
-        if (passwd) {
-                censort = ecalloc(1, sizeof(text));
-                memset(censort, censor_char, strlen(text));
-                drw_text_align(drw, x, 0, curpos, bh, censort, cursor, AlignR);
-                drw_text_align(drw, x + curpos, 0, w - curpos, bh, censort + cursor, strlen(censort) - cursor, AlignL);
-                free(censort);
-        } else {
-                drw_text_align(drw, x, 0, curpos, bh, text, cursor, AlignR);
-                drw_text_align(drw, x + curpos, 0, w - curpos, bh, text + cursor, strlen(text) - cursor, AlignL);
-        }
-        drw_rect(drw, x + curpos - 1, 2, 2, bh - 4, 1, 0);
+	if (passwd) {
+		censort = ecalloc(1, sizeof(text));
+		memset(censort, censor_char, strlen(text));
+		drw_text_align(drw, x, 0, curpos, bh, censort, cursor, AlignR);
+		drw_text_align(drw, x + curpos, 0, w - curpos, bh, censort + cursor, strlen(censort) - cursor, AlignL);
+		free(censort);
+	} else {
+		drw_text_align(drw, x, 0, curpos, bh, text, cursor, AlignR);
+		drw_text_align(drw, x + curpos, 0, w - curpos, bh, text + cursor, strlen(text) - cursor, AlignL);
+	}
+	drw_rect(drw, x + curpos - 1, 2, 2, bh - 4, 1, 0);
 
-        recalculatenumbers();
+	recalculatenumbers();
 
 	if (lines > 0) {
 		/* draw vertical list */
@@ -271,8 +271,8 @@ drawmenu(void)
 			drw_text(drw, mw - w - TEXTW(numbers) - 2 * sp, 0, w, bh, lrpad / 2, ">", 0);
 		}
 	}
-        drw_setscheme(drw, scheme[SchemeNorm]);
-        drw_text(drw, mw - TEXTW(numbers) - 3 * sp, 0, TEXTW(numbers), bh, lrpad / 2, numbers, 0);
+	drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_text(drw, mw - TEXTW(numbers) - 3 * sp, 0, TEXTW(numbers), bh, lrpad / 2, numbers, 0);
 	drw_map(drw, win, 0, 0, mw, mh);
 }
 
@@ -304,7 +304,7 @@ grabkeyboard(void)
 	/* try to grab keyboard, we may have to wait for another process to ungrab */
 	for (i = 0; i < 1000; i++) {
 		if (XGrabKeyboard(dpy, DefaultRootWindow(dpy), True, GrabModeAsync,
-		                  GrabModeAsync, CurrentTime) == GrabSuccess)
+				  GrabModeAsync, CurrentTime) == GrabSuccess)
 			return;
 		nanosleep(&ts, NULL);
 	}
@@ -400,7 +400,7 @@ keypress(XKeyEvent *ev)
 {
 	char buf[64];
 	int len;
-        struct item *item;
+	struct item *item;
 	KeySym ksym = NoSymbol;
 	Status status;
 
@@ -449,7 +449,7 @@ keypress(XKeyEvent *ev)
 		case XK_v: /* paste selection */
 		case XK_V:
 			XConvertSelection(dpy, (ev->state & ShiftMask) ? clip : XA_PRIMARY,
-			                  utf8, utf8, win, CurrentTime);
+					  utf8, utf8, win, CurrentTime);
 			return;
 		case XK_Left:
 		case XK_KP_Left:
@@ -590,17 +590,17 @@ insert:
 		}
 		break;
 	case XK_Tab:
-                if (!matches) break; /* cannot complete no matches */
-                strncpy(text, matches->text, sizeof text - 1);
-                text[sizeof text - 1] = '\0';
-                len = cursor = strlen(text); /* length of longest common prefix */
-                for (item = matches; item && item->text; item = item->right) {
-                        cursor = 0;
-                        while (cursor < len && text[cursor] == item->text[cursor])
-                                cursor++;
-                        len = cursor;
-                }
-                memset(text + len, '\0', strlen(text) - len);
+		if (!matches) break; /* cannot complete no matches */
+		strncpy(text, matches->text, sizeof text - 1);
+		text[sizeof text - 1] = '\0';
+		len = cursor = strlen(text); /* length of longest common prefix */
+		for (item = matches; item && item->text; item = item->right) {
+			cursor = 0;
+			while (cursor < len && text[cursor] == item->text[cursor])
+				cursor++;
+			len = cursor;
+		}
+		memset(text + len, '\0', strlen(text) - len);
 		break;
 	}
 
@@ -618,7 +618,7 @@ paste(void)
 
 	/* we have been given the current selection, now insert it into input */
 	if (XGetWindowProperty(dpy, win, utf8, 0, (sizeof text / 4) + 1, False,
-	                   utf8, &da, &di, &dl, &dl, (unsigned char **)&p)
+			   utf8, &da, &di, &dl, &dl, (unsigned char **)&p)
 	    == Success && p) {
 		insert(p, (q = strchr(p, '\n')) ? q - p : (ssize_t)strlen(p));
 		XFree(p);
@@ -633,10 +633,10 @@ readstdin(void)
 	size_t i, itemsiz = 0, linesiz = 0;
 	ssize_t len;
 
-        if (passwd) {
-                inputw = lines = 0;
-                return;
-        }
+	if (passwd) {
+		inputw = lines = 0;
+		return;
+	}
 
 	/* read each line from stdin and add it to the item list */
 	for (i = 0; (len = getline(&line, &linesiz, stdin)) != -1; i++) {
@@ -771,10 +771,10 @@ setup(void)
 	swa.background_pixel = scheme[SchemeUnsel][ColBg].pixel;
 	swa.event_mask = ExposureMask | KeyPressMask | VisibilityChangeMask;
 	win = XCreateWindow(dpy, root, x + sp, y + vp - (topbar ? 0 : border_width * 2), mw - 2 * sp - border_width * 2, mh, border_width,
-	                    CopyFromParent, CopyFromParent, CopyFromParent,
-	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
-        if (border_width)
-                XSetWindowBorder(dpy, win, scheme[SchemeBorder][ColBg].pixel);
+			    CopyFromParent, CopyFromParent, CopyFromParent,
+			    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
+	if (border_width)
+		XSetWindowBorder(dpy, win, scheme[SchemeBorder][ColBg].pixel);
 	XSetClassHint(dpy, win, &ch);
 
 
@@ -783,7 +783,7 @@ setup(void)
 		die("XOpenIM failed: could not open input device");
 
 	xic = XCreateIC(xim, XNInputStyle, XIMPreeditNothing | XIMStatusNothing,
-	                XNClientWindow, win, XNFocusWindow, win, NULL);
+			XNClientWindow, win, XNFocusWindow, win, NULL);
 
 	XMapRaised(dpy, win);
 	if (embed) {
@@ -826,8 +826,8 @@ main(int argc, char *argv[])
 			fstrncmp = strncasecmp;
 			fstrstr = cistrstr;
 		} else if (!strcmp(argv[i], "-P"))
-                        passwd = 1;
-                else if (i + 1 == argc)
+			passwd = 1;
+		else if (i + 1 == argc)
 			usage();
 		/* these options take one argument */
 		else if (!strcmp(argv[i], "-l"))   /* number of lines in vertical list */
@@ -848,8 +848,8 @@ main(int argc, char *argv[])
 			colors[SchemeUnsel][ColFg] = argv[++i];
 		else if (!strcmp(argv[i], "-w"))   /* embedding window id */
 			embed = argv[++i];
-                else if (!strcmp(argv[i], "-bw"))  /* border width */
-                        border_width = atoi(argv[++i]);
+		else if (!strcmp(argv[i], "-bw"))  /* border width */
+			border_width = atoi(argv[++i]);
 		else
 			usage();
 
@@ -869,8 +869,8 @@ main(int argc, char *argv[])
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
 
-        sp = sidepad;
-        vp = (topbar == 1) ? vertpad : - vertpad;
+	sp = sidepad;
+	vp = (topbar == 1) ? vertpad : - vertpad;
 
 #ifdef __OpenBSD__
 	if (pledge("stdio rpath", NULL) == -1)

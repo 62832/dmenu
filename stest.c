@@ -52,7 +52,7 @@ static void
 usage(void)
 {
 	fprintf(stderr, "usage: %s [-abcdefghlpqrsuvwx] "
-	        "[-n file] [-o file] [file...]\n", argv0);
+		"[-n file] [-o file] [file...]\n", argv0);
 	exit(2); /* like test(1) return > 1 on error */
 }
 
@@ -95,7 +95,7 @@ main(int argc, char *argv[])
 				/* test directory contents */
 				while ((d = readdir(dir))) {
 					r = snprintf(path, sizeof path, "%s/%s",
-					             *argv, d->d_name);
+						     *argv, d->d_name);
 					if (r >= 0 && (size_t)r < sizeof path)
 						test(path, d->d_name);
 				}
