@@ -271,6 +271,7 @@ drawmenu(void)
 			drw_text(drw, mw - w - TEXTW(numbers) - 2 * sp, 0, w, bh, lrpad / 2, ">", 0);
 		}
 	}
+        drw_setscheme(drw, scheme[SchemeNorm]);
         drw_text(drw, mw - TEXTW(numbers) - 3 * sp, 0, TEXTW(numbers), bh, lrpad / 2, numbers, 0);
 	drw_map(drw, win, 0, 0, mw, mh);
 }

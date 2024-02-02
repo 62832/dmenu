@@ -32,3 +32,9 @@ Yet another personal build of Suckless's [dmenu](https://tools.suckless.org/dmen
   - [numbers](https://tools.suckless.org/dmenu/patches/numbers/)
     - adds text which displays the number of matched and total items in the top right corner of
       dmenu
+
+### Other modifications:
+
+  - replaced `CTRL+y`/`CTRL+Y` paste binds with `CTRL+v`/`CTRL+V` respectively
+  - "normal/selected" colour scheming replaced with "normal/unselected"
+    - `-sb` and `-sf` flags accordingly changed to `-ub` and `-uf` for unselected colours
