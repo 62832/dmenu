@@ -432,7 +432,7 @@ drw_text_align(Drw *drw, int x, int y, unsigned int w, unsigned int h, const cha
 	i = align == AlignL ? 0 : textlen;
 	x = align == AlignL ? x : x + w;
 	while (1) {
-		utf8strlen = 0;
+		ew = utf8strlen = 0;
 		nextfont = NULL;
 		/* if (align == AlignL) */
 		utf8str = text + i;
