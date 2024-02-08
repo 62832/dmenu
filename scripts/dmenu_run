@@ -6,8 +6,9 @@ dmenu_path() {
 	[ ! -e "$cachedir" ] && mkdir -p "$cachedir"
 
 	IFS=:
-	if stest -dqr -n "$cache" "$PATH"; then
-		stest -flx "$PATH" | sort -u | tee "$cache"
+        # shellcheck disable=SC2086
+	if stest -dqr -n "$cache" $PATH > /dev/null 2>&1; then
+		stest -flx $PATH | sort -u | tee "$cache"
 	else
 		cat "$cache"
 	fi
@@ -17,5 +18,5 @@ cmd=$(dmenu_path | dmenu "$@")
 
 case $cmd in
 	*\!) "${TERMINAL:-st}" -e "${cmd%?}" & ;;
-	*) "$cmd" & ;;
+	*) test "$cmd" && "$cmd" & ;;
 esac
