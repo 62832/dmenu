@@ -711,6 +711,9 @@ setup(void)
 	Window pw;
 	int a, di, n, area = 0;
 #endif
+
+        putenv("_JAVA_AWT_WM_NONREPARENTING=1");
+
 	/* init appearance */
 	for (j = 0; j < SchemeLast; j++)
 		scheme[j] = drw_scm_create(drw, colors[j], 2);
