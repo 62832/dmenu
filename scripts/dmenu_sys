@@ -33,7 +33,7 @@ _shutdown() {
     poweroff || sudo -A poweroff
 }
 
-case "$(actions | dmenu -i -p 'Action: ')" in
+case "$(actions | dmenu -i -p 'ACTION ')" in
     'lock') slock ;;
     'logout') kill -TERM "$(wmpid)" ;;
     "renew $WM") kill -HUP "$(wmpid)" ;;
